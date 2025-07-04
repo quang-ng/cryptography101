@@ -286,10 +286,21 @@ def decrypt(ciphertext64, key64):
     preoutput = (R << 32) | L
     return final_permutation(preoutput)
 
+key = 6423281134536131849
 
-key = 4860080471782942578
-plain_text = 10000
+message = "🐱MEOW!!!"  # 8 characters max for 64 bits (1 byte per char)
+plain_text = int.from_bytes(message.encode("utf-8"), 'big')
 
-cipher_text = encrypt(plaintext=plain_text, key=key)
-print("cipher text: ", cipher_text)
-print("cipher text in bin: ", bin(cipher_text))
+print("Original message:", message)
+print("Plaintext (int):", plain_text)
+
+# Encrypt & Decrypt
+cipher_text = encrypt(plain_text, key)
+decrypted = decrypt(cipher_text, key)
+
+# Turn decrypted int back to string
+recovered_msg = decrypted.to_bytes(8, 'big').decode("utf-8", errors="ignore")
+
+print("\n🔐 Encrypted:", cipher_text)
+print("🕵️ Decrypted message:", recovered_msg)
+
